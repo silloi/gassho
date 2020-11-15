@@ -47,10 +47,13 @@ export const Song = ({ song, movieData }) => {
         <input type="text" value={searchText} onChange={handleInput} />
         <Suggestion />
         <h1>{song.title}</h1>
-        {song.writer ? <p>作詞：{song ? song.writer : null}</p> : null}
-        {song.composer ? <p>作曲：{song ? song.composer : null}</p> : null}
-        {song.arranger ? <p>編曲：{song ? song.arranger : null}</p> : null}
-        <MoviesYouTube movieData={movieData} />
+        {song.writer ? <p>作詞：{song.writer}</p> : null}
+        {song.composer ? <p>作曲：{song.composer}</p> : null}
+        {song.arranger ? <p>編曲：{song.arranger}</p> : null}
+        <a href={`https://ja.wikipedia.org/wiki/${song.title}`}>
+          Wikipediaで調べる
+        </a>
+        <MoviesYouTube movieData={movieData} title={song.title} />
       </div>
     )
   }
@@ -74,8 +77,8 @@ export const fetchYouTube = async (title: string | string[]) => {
   return data
 }
 
-const MoviesYouTube = ({ movieData }) => {
-  const video =
+const MoviesYouTube = ({ movieData, title }) => {
+  const videos =
     movieData && movieData.items
       ? movieData.items.map((video) => {
           const url = 'https://www.youtube.com/embed/' + video.id.videoId
@@ -96,7 +99,14 @@ const MoviesYouTube = ({ movieData }) => {
         })
       : null
 
-  return <div style={{ marginTop: '10px' }}>{video}</div>
+  return (
+    <div>
+      <ul>{videos}</ul>
+      <a href={`https://www.youtube.com/results?search_query=${title}+合唱`}>
+        YouTubeでもっと調べる
+      </a>
+    </div>
+  )
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
