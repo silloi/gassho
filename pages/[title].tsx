@@ -34,6 +34,7 @@ export const Song = ({ song, movieData }) => {
         bordered
         size="small"
         dataSource={searchResults}
+        style={{ position: 'fixed', backgroundColor: 'white', width: '100%' }}
         renderItem={(result) => (
           <List.Item onClick={clearSearchForm}>
             <Link href={`/${result.title}`}>{result.title}</Link>
@@ -48,22 +49,26 @@ export const Song = ({ song, movieData }) => {
   } else {
     return (
       <div>
-        <Input
-          placeholder="タイトルを検索"
-          value={searchText}
-          onChange={handleInput}
-        />
-        <Suggestion />
-        <Typography>
-          <Title>{song.title}</Title>
-        </Typography>
-        {song.writer ? <p>作詞：{song.writer}</p> : null}
-        {song.composer ? <p>作曲：{song.composer}</p> : null}
-        {song.arranger ? <p>編曲：{song.arranger}</p> : null}
-        <a href={`https://ja.wikipedia.org/wiki/${song.title}`}>
-          Wikipediaで調べる
-        </a>
-        <MoviesYouTube movieData={movieData} title={song.title} />
+        <div style={{ position: 'fixed', width: '100%', zIndex: 10 }}>
+          <Input
+            placeholder="タイトルを検索"
+            value={searchText}
+            onChange={handleInput}
+          />
+          <Suggestion />
+        </div>
+        <div style={{ paddingTop: 60 }}>
+          <Typography>
+            <Title>{song.title}</Title>
+          </Typography>
+          {song.writer ? <p>作詞：{song.writer}</p> : null}
+          {song.composer ? <p>作曲：{song.composer}</p> : null}
+          {song.arranger ? <p>編曲：{song.arranger}</p> : null}
+          <a href={`https://ja.wikipedia.org/wiki/${song.title}`}>
+            Wikipediaで調べる
+          </a>
+          <MoviesYouTube movieData={movieData} title={song.title} />
+        </div>
       </div>
     )
   }
