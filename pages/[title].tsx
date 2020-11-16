@@ -2,7 +2,10 @@ import { GetStaticProps, GetStaticPaths } from 'next'
 import { useRouter } from 'next/router'
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
+import { Typography, List, Input, Row, Col } from 'antd'
+const { Title } = Typography
 import songs from '../db/songs'
+import 'antd/dist/antd.css'
 
 export const Song = ({ song, movieData }) => {
   const router = useRouter()
@@ -26,17 +29,18 @@ export const Song = ({ song, movieData }) => {
   }, [searchText])
 
   const Suggestion = () => {
-    return (
-      <ul>
-        {searchResults.map((result) => {
-          return (
-            <li key={result.id} onClick={clearSearchForm}>
-              <Link href={`/${result.title}`}>{result.title}</Link>
-            </li>
-          )
-        })}
-      </ul>
-    )
+    return searchResults.length ? (
+      <List
+        bordered
+        size="small"
+        dataSource={searchResults}
+        renderItem={(result) => (
+          <List.Item onClick={clearSearchForm}>
+            <Link href={`/${result.title}`}>{result.title}</Link>
+          </List.Item>
+        )}
+      />
+    ) : null
   }
 
   if (router.isFallback) {
@@ -44,9 +48,15 @@ export const Song = ({ song, movieData }) => {
   } else {
     return (
       <div>
-        <input type="text" value={searchText} onChange={handleInput} />
+        <Input
+          placeholder="タイトルを検索"
+          value={searchText}
+          onChange={handleInput}
+        />
         <Suggestion />
-        <h1>{song.title}</h1>
+        <Typography>
+          <Title>{song.title}</Title>
+        </Typography>
         {song.writer ? <p>作詞：{song.writer}</p> : null}
         {song.composer ? <p>作曲：{song.composer}</p> : null}
         {song.arranger ? <p>編曲：{song.arranger}</p> : null}
@@ -84,27 +94,42 @@ const MoviesYouTube = ({ movieData, title }) => {
           const url = 'https://www.youtube.com/embed/' + video.id.videoId
 
           return (
-            <li key={video.id.videoId}>
-              <div style={{ margin: '20px', textAlign: 'center' }}>
+            <Col key={video.id.videoId} span={24}>
+              <div className="video_container">
                 <iframe
                   id="ytplayer"
-                  width="480"
-                  height="270"
+                  width="320"
+                  height="180"
                   src={url}
                   frameBorder="0"
                 />
               </div>
-            </li>
+            </Col>
           )
         })
       : null
 
   return (
     <div>
-      <ul>{videos}</ul>
+      <Row>{videos}</Row>
       <a href={`https://www.youtube.com/results?search_query=${title}+合唱`}>
         YouTubeでもっと調べる
       </a>
+      <style jsx>{`
+        .video_container {
+          position: relative;
+          padding-bottom: 56.25%;
+          height: 0;
+          overflow: hidden;
+        }
+        .video_container iframe {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+        }
+      `}</style>
     </div>
   )
 }
