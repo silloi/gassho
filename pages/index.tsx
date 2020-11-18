@@ -6,7 +6,7 @@ const { Title } = Typography
 import songs from '../db/songs'
 import 'antd/dist/antd.css'
 
-export const Home = ({ songsClassified }) => {
+export const Home = ({ songsClassified }): JSX.Element => {
   return (
     <div className="container">
       <Head>
@@ -47,7 +47,7 @@ export const Home = ({ songsClassified }) => {
   )
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async (): Promise<any> => {
   const iroha =
     'あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん'
 
