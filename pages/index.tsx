@@ -47,14 +47,14 @@ export const Home = ({ songsClassified }): JSX.Element => {
   )
 }
 
-export const getStaticProps: GetStaticProps = async (): Promise<any> => {
+export const getStaticProps: GetStaticProps = async () => {
   const iroha =
     'あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん'
 
   const songsClassified = []
 
   for (let i = 0; i < iroha.length - 1; i++) {
-    const songsFiltered = songs.filter((song) => song.initial === iroha[i])
+    const songsFiltered: any = songs.filter((song) => song.initial === iroha[i])
     const object = {
       initial: iroha[i],
       songsFiltered,
