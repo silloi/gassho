@@ -51,7 +51,7 @@ export const getStaticProps: GetStaticProps = async () => {
   const iroha =
     'あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん'
 
-  const songsClassified = []
+  const songsClassified: any = []
 
   for (let i = 0; i < iroha.length - 1; i++) {
     const songsFiltered = songs.filter((song) => song.initial === iroha[i])
