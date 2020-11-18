@@ -6,7 +6,7 @@ const { Title } = Typography
 import songs from '../db/songs'
 import 'antd/dist/antd.css'
 
-export const Home = ({ songsClassified }): JSX.Element => {
+export const Home = ({ songsClassified }) => {
   return (
     <div className="container">
       <Head>
@@ -51,7 +51,7 @@ export const getStaticProps: GetStaticProps = async () => {
   const iroha =
     'あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん'
 
-  const songsClassified: any = []
+  const songsClassified = []
 
   for (let i = 0; i < iroha.length - 1; i++) {
     const songsFiltered = songs.filter((song) => song.initial === iroha[i])
