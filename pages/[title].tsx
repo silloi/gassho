@@ -1,8 +1,9 @@
+import Head from 'next/head'
 import { GetStaticProps, GetStaticPaths } from 'next'
 import { useRouter } from 'next/router'
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
-import { Typography, List, Input, Row, Col } from 'antd'
+import { Typography, List, Input, Card, Row, Col, PageHeader } from 'antd'
 const { Title } = Typography
 import songs from '../db/songs'
 import 'antd/dist/antd.css'
@@ -48,8 +49,27 @@ export const Song = ({ song, movieData }) => {
     return <div>Loading...</div>
   } else {
     return (
-      <div>
-        <div style={{ position: 'fixed', width: '100%', zIndex: 10 }}>
+      <div className="container">
+        <Head>
+          <title>{song.title} | 合唱コンクール.com</title>
+        </Head>
+
+        <div
+          style={{
+            position: 'fixed',
+            width: '100%',
+            backgroundColor: '#fff',
+            zIndex: 10,
+          }}
+        >
+          <PageHeader
+            onBack={() => window.history.back()}
+            title={
+              <Link href="/">
+                <a className="header-title">合唱コンクール曲一覧</a>
+              </Link>
+            }
+          />
           <Input
             placeholder="タイトルを検索"
             value={searchText}
@@ -57,18 +77,25 @@ export const Song = ({ song, movieData }) => {
           />
           <Suggestion />
         </div>
-        <div style={{ paddingTop: 60 }}>
-          <Typography>
-            <Title>{song.title}</Title>
-          </Typography>
-          {song.writer ? <p>作詞：{song.writer}</p> : null}
-          {song.composer ? <p>作曲：{song.composer}</p> : null}
-          {song.arranger ? <p>編曲：{song.arranger}</p> : null}
-          <a href={`https://ja.wikipedia.org/wiki/${song.title}`}>
-            Wikipediaで調べる
-          </a>
+        <main style={{ paddingTop: 120 }}>
+          <Card bordered={false}>
+            <Typography>
+              <Title>{song.title}</Title>
+            </Typography>
+            {song.writer ? <p>作詞：{song.writer}</p> : null}
+            {song.composer ? <p>作曲：{song.composer}</p> : null}
+            {song.arranger ? <p>編曲：{song.arranger}</p> : null}
+            <a href={`https://ja.wikipedia.org/wiki/${song.title}`}>
+              Wikipediaで調べる
+            </a>
+          </Card>
           <MoviesYouTube movieData={movieData} title={song.title} />
-        </div>
+        </main>
+        <style jsx>{`
+          .header-title {
+            color: #000;
+          }
+        `}</style>
       </div>
     )
   }
@@ -103,8 +130,8 @@ const MoviesYouTube = ({ movieData, title }) => {
               <div className="video_container">
                 <iframe
                   id="ytplayer"
-                  width="320"
-                  height="180"
+                  width="375"
+                  height="211"
                   src={url}
                   frameBorder="0"
                 />
@@ -117,9 +144,11 @@ const MoviesYouTube = ({ movieData, title }) => {
   return (
     <div>
       <Row>{videos}</Row>
-      <a href={`https://www.youtube.com/results?search_query=${title}+合唱`}>
-        YouTubeでもっと調べる
-      </a>
+      <Card bordered={false}>
+        <a href={`https://www.youtube.com/results?search_query=${title}+合唱`}>
+          YouTubeでもっと調べる
+        </a>
+      </Card>
       <style jsx>{`
         .video_container {
           position: relative;
