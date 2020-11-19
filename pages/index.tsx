@@ -1,12 +1,28 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import { GetStaticProps } from 'next'
 import { Typography, Card } from 'antd'
 const { Title } = Typography
 import songs from '../db/songs'
 import 'antd/dist/antd.css'
 
-export const Home = ({ songsClassified }): JSX.Element => {
+export const Home = (): JSX.Element => {
+  const iroha =
+    'あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん'
+
+  const songsClassified = []
+
+  for (let i = 0; i < iroha.length - 1; i++) {
+    const songsFiltered: any = songs.filter((song) => song.initial === iroha[i])
+    const object = {
+      initial: iroha[i],
+      songsFiltered,
+    }
+
+    if (object.songsFiltered.length) {
+      songsClassified.push(object)
+    }
+  }
+
   return (
     <div className="container">
       <Head>
@@ -45,32 +61,6 @@ export const Home = ({ songsClassified }): JSX.Element => {
       <style jsx>{``}</style>
     </div>
   )
-}
-
-export const getStaticProps: GetStaticProps = async () => {
-  const iroha =
-    'あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん'
-
-  const songsClassified = []
-
-  for (let i = 0; i < iroha.length - 1; i++) {
-    const songsFiltered: any = songs.filter((song) => song.initial === iroha[i])
-    const object = {
-      initial: iroha[i],
-      songsFiltered,
-    }
-
-    if (object.songsFiltered.length) {
-      songsClassified.push(object)
-    }
-  }
-
-  return {
-    props: {
-      // `props` key の inside で結果を返す
-      songsClassified,
-    },
-  }
 }
 
 export default Home
