@@ -24,7 +24,7 @@ export const Home = (): JSX.Element => {
   }
 
   return (
-    <div className="container">
+    <div className="container" style={{ maxWidth: 800, margin: '0 auto' }}>
       <Head>
         <title>合唱コンクール.com</title>
       </Head>

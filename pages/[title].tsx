@@ -35,7 +35,7 @@ export const Song = ({ song, movieData }) => {
         bordered
         size="small"
         dataSource={searchResults}
-        style={{ position: 'fixed', backgroundColor: 'white', width: '100%' }}
+        style={{ backgroundColor: 'white', width: '100%' }}
         renderItem={(result) => (
           <List.Item onClick={clearSearchForm}>
             <Link href={`/${result.title}`}>{result.title}</Link>
@@ -49,7 +49,7 @@ export const Song = ({ song, movieData }) => {
     return <div>Loading...</div>
   } else {
     return (
-      <div className="container">
+      <div className="container" style={{ maxWidth: 800, margin: '0 auto' }}>
         <Head>
           <title>{song.title} | 合唱コンクール.com</title>
         </Head>
@@ -62,20 +62,22 @@ export const Song = ({ song, movieData }) => {
             zIndex: 10,
           }}
         >
-          <PageHeader
-            onBack={() => window.history.back()}
-            title={
-              <Link href="/">
-                <a className="header-title">合唱コンクール曲一覧</a>
-              </Link>
-            }
-          />
-          <Input
-            placeholder="タイトルを検索"
-            value={searchText}
-            onChange={handleInput}
-          />
-          <Suggestion />
+          <div style={{ maxWidth: 800 }}>
+            <PageHeader
+              onBack={() => window.history.back()}
+              title={
+                <Link href="/">
+                  <a className="header-title">合唱コンクール曲一覧</a>
+                </Link>
+              }
+            />
+            <Input
+              placeholder="タイトルを検索"
+              value={searchText}
+              onChange={handleInput}
+            />
+            <Suggestion />
+          </div>
         </div>
         <main style={{ paddingTop: 120 }}>
           <Card bordered={false}>
