@@ -47,6 +47,7 @@ export const Song = ({ song }) => {
 
   const [movieData, setMovieData] = useState([])
 
+  // TODO: API化
   const fetchYouTube = async () => {
     if (!song) {
       return
