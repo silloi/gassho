@@ -103,24 +103,6 @@ export const Song = ({ song, movieData }) => {
   }
 }
 
-export const fetchYouTube = async (title: string | string[]) => {
-  const endpoint = 'https://www.googleapis.com/youtube/v3/search'
-  const part = 'id'
-  const q = `${title}|合唱曲`
-  const maxResults = 3
-  const regionCode = 'jp'
-
-  const key = process.env.YOUTUBE_API_KEY
-
-  const query = encodeURI(
-    `part=${part}&q=${q}&maxResults=${maxResults}&regionCode=${regionCode}&key=${key}`
-  )
-  const response = await fetch(`${endpoint}?${query}`)
-  const data = await response.json()
-
-  return data
-}
-
 const MoviesYouTube = ({ movieData, title }) => {
   const videos =
     movieData && movieData.items
@@ -180,6 +162,27 @@ export const getStaticPaths: GetStaticPaths = async () => {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const fetchYouTube = async (title: string | string[]) => {
+    const endpoint = 'https://www.googleapis.com/youtube/v3/search'
+    const part = 'id'
+    const q = `${title}|合唱曲`
+    const maxResults = 3
+    const regionCode = 'jp'
+  
+    const key = process.env.YOUTUBE_API_KEY
+  
+    const query = encodeURI(
+      `part=${part}&q=${q}&maxResults=${maxResults}&regionCode=${regionCode}&key=${key}`
+    )
+    const response = await fetch(`${endpoint}?${query}`)
+    const data = await response.json()
+
+    console.log('title', title)
+    console.log('data', data)
+  
+    return data
+  }
+
   /*
    * タイトルに紐づく、ページの生成に必要なデータを返す
    * 引数の `params` の中に `title` が入ってる
