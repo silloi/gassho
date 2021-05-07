@@ -1,14 +1,14 @@
 import Head from 'next/head'
 import { GetStaticProps, GetStaticPaths } from 'next'
 import { useRouter } from 'next/router'
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import Link from 'next/link'
 import { Typography, List, Input, Card, Row, Col, PageHeader } from 'antd'
 const { Title } = Typography
 import songs from '../db/songs'
 import 'antd/dist/antd.css'
 
-export const Song = ({ song, movieData }) => {
+export const Song = ({ song }) => {
   const router = useRouter()
   const [searchText, setSearchText] = useState('')
 
@@ -44,6 +44,34 @@ export const Song = ({ song, movieData }) => {
       />
     ) : null
   }
+
+  const [movieData, setMovieData] = useState([])
+
+  const fetchYouTube = async () => {
+    if (!song) {
+      return
+    }
+
+    const endpoint = 'https://www.googleapis.com/youtube/v3/search'
+    const part = 'id'
+    const q = `${song.title}|合唱曲`
+    const maxResults = 3
+    const regionCode = 'jp'
+  
+    const key = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY
+  
+    const query = encodeURI(
+      `part=${part}&q=${q}&maxResults=${maxResults}&regionCode=${regionCode}&key=${key}`
+    )
+    const response = await fetch(`${endpoint}?${query}`)
+    const data = await response.json()
+
+    setMovieData(data)
+  }
+
+  useEffect(() => {
+    fetchYouTube()
+  }, [song])
 
   if (router.isFallback) {
     return <div>Loading...</div>
@@ -162,27 +190,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const fetchYouTube = async (title: string | string[]) => {
-    const endpoint = 'https://www.googleapis.com/youtube/v3/search'
-    const part = 'id'
-    const q = `${title}|合唱曲`
-    const maxResults = 3
-    const regionCode = 'jp'
-  
-    const key = process.env.YOUTUBE_API_KEY
-  
-    const query = encodeURI(
-      `part=${part}&q=${q}&maxResults=${maxResults}&regionCode=${regionCode}&key=${key}`
-    )
-    const response = await fetch(`${endpoint}?${query}`)
-    const data = await response.json()
-
-    console.log('title', title)
-    console.log('data', data)
-  
-    return data
-  }
-
   /*
    * タイトルに紐づく、ページの生成に必要なデータを返す
    * 引数の `params` の中に `title` が入ってる
@@ -190,13 +197,10 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
    */
   const song = songs.find((song) => song.title === params.title)
 
-  const movieData = await fetchYouTube(params.title)
-
   return {
     props: {
       // `props` key の inside で結果を返す
       song,
-      movieData,
     },
   }
 }
