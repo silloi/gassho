@@ -55,7 +55,7 @@ export const Song = ({ song }) => {
 
     const endpoint = 'https://www.googleapis.com/youtube/v3/search'
     const part = 'id'
-    const q = `${song.title}|合唱曲`
+    const q = `${song.title}合唱曲`
     const maxResults = 3
     const regionCode = 'jp'
   
