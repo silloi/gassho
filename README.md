@@ -1,12 +1,8 @@
-# NextJS Typescript Boilerplate
+# Gassho Concours
 
-Bootstrap a developer-friendly NextJS app configured with:
+[![Image from Gyazo](https://i.gyazo.com/b2cfb363a429c938d5856097e479598e.png)](https://gyazo.com/b2cfb363a429c938d5856097e479598e)
 
-- [Typescript](https://www.typescriptlang.org/)
-- Linting with [ESLint](https://eslint.org/)
-- Formatting with [Prettier](https://prettier.io/)
-- Linting, typechecking and formatting on by default using [`husky`](https://github.com/typicode/husky) for commit hooks
-- Testing with [Jest](https://jestjs.io/) and [`react-testing-library`](https://testing-library.com/docs/react-testing-library/intro)
+https://合唱コンクール.com/
 
 ## Deploy your own
 
