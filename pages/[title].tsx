@@ -89,13 +89,14 @@ export const Song = ({ song }) => {
             width: '100%',
             backgroundColor: '#fff',
             zIndex: 10,
+            top: 0,
           }}
         >
           <div style={{ maxWidth: 800 }}>
             <PageHeader
               onBack={() => window.history.back()}
               title={
-                <Link href="/" className="header-title">合唱コンクール曲一覧</Link>
+                <Link href="/">合唱コンクール曲一覧</Link>
               }
             />
             <Input
@@ -120,11 +121,7 @@ export const Song = ({ song }) => {
           </Card>
           <MoviesYouTube movieData={movieData} title={song.title} />
         </main>
-        <style jsx>{`
-          .header-title {
-            color: #000;
-          }
-        `}</style>
+        <style jsx>{``}</style>
       </div>
     )
   }
