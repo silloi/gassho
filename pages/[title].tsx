@@ -45,7 +45,7 @@ export const Song = ({ song }) => {
     ) : null
   }
 
-  const [movieData, setMovieData] = useState([])
+  const [movieItems, setMovieItems] = useState([])
 
   const fetchYouTube = async () => {
     if (!song) {
@@ -53,9 +53,9 @@ export const Song = ({ song }) => {
     }
 
     const response = await fetch(`/api/youtube?id=${song.id}&title=${song.title}`)
-    const data = await response.json()
+    const items = await response.json()
 
-    setMovieData(data)
+    setMovieItems(items)
   }
 
   useEffect(() => {
@@ -107,7 +107,7 @@ export const Song = ({ song }) => {
               Wikipediaで調べる
             </a>
           </Card>
-          <MoviesYouTube movieData={movieData} title={song.title} />
+          <MoviesYouTube movieItems={movieItems} title={song.title} />
         </main>
         <style jsx>{``}</style>
       </div>
@@ -115,10 +115,10 @@ export const Song = ({ song }) => {
   }
 }
 
-const MoviesYouTube = ({ movieData, title }) => {
+const MoviesYouTube = ({ movieItems, title }) => {
   const videos =
-    movieData && movieData.items
-      ? movieData.items.map((video) => {
+    movieItems
+      ? movieItems.map((video) => {
           const url = 'https://www.youtube.com/embed/' + video.id.videoId
 
           return (

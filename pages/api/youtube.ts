@@ -1,4 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { kv } from '@vercel/kv';
+
+type ResponseDataItem = {
+  kind: string;
+  etag: string;
+  id: {
+    kind: string;
+    videoId: string;
+  };
+};
 
 type ResponseData = {
   kind: string;
@@ -9,22 +19,21 @@ type ResponseData = {
     totalResults: number;
     resultsPerPage: number;
   };
-  items: {
-    kind: string;
-    etag: string;
-    id: {
-      kind: string;
-      videoId: string;
-    };
-  }[];
+  items: ResponseDataItem[];
 };
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<ResponseData | { message: string }>
+  res: NextApiResponse<ResponseDataItem[] | { message: string }>
 ) {
   if (!req.query.title || !req.query.id) {
-    res.status(400).json({ message: 'Bad Request' });
+    return res.status(400).json({ message: 'Bad Request' });
+  }
+
+  /** check whether cached data exist */
+  const cachedData: ResponseDataItem[] = await kv.hget(`song-${req.query.id}`, 'items');
+  if (cachedData) {
+    return res.status(200).json(cachedData);
   }
 
   const endpoint = 'https://www.googleapis.com/youtube/v3/search'
@@ -37,9 +46,16 @@ export default async function handler(
 
   const query = encodeURI(
     `part=${part}&q=${q}&maxResults=${maxResults}&regionCode=${regionCode}&key=${key}`
-  )
+  );
   const response = await fetch(`${endpoint}?${query}`);
-  const data = await response.json();
+  if (response.status !== 200) {
+    return res.status(500).json({ message: 'Internal Server Error' });
+  }
 
-  res.status(200).json(data)
+  const data: ResponseData = await response.json();
+
+  /** cache response data */
+  await kv.hset(`song-${req.query.id}`, data);
+
+  res.status(200).json(data.items);
 }
