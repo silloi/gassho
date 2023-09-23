@@ -3,7 +3,6 @@ import Link from 'next/link'
 import { Typography, Card } from 'antd'
 const { Title } = Typography
 import songs from '../db/songs'
-import 'antd/dist/antd.css'
 
 export const Home = (): JSX.Element => {
   const iroha =

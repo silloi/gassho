@@ -3,10 +3,10 @@ import { GetStaticProps, GetStaticPaths } from 'next'
 import { useRouter } from 'next/router'
 import { useState, useMemo, useEffect } from 'react'
 import Link from 'next/link'
-import { Typography, List, Input, Card, Row, Col, PageHeader } from 'antd'
+import { Typography, List, Input, Card, Row, Col } from 'antd'
+import { PageHeader } from '@ant-design/pro-layout';
 const { Title } = Typography
 import songs from '../db/songs'
-import 'antd/dist/antd.css'
 
 export const Song = ({ song }) => {
   const router = useRouter()
@@ -80,7 +80,7 @@ export const Song = ({ song }) => {
     return (
       <div className="container" style={{ maxWidth: 800, margin: '0 auto' }}>
         <Head>
-          <title>{song.title} | 合唱コンクール.com</title>
+          <title>{`${song.title} | 合唱コンクール.com`}</title>
         </Head>
 
         <div
@@ -95,9 +95,7 @@ export const Song = ({ song }) => {
             <PageHeader
               onBack={() => window.history.back()}
               title={
-                <Link href="/">
-                  <a className="header-title">合唱コンクール曲一覧</a>
-                </Link>
+                <Link href="/" className="header-title">合唱コンクール曲一覧</Link>
               }
             />
             <Input
