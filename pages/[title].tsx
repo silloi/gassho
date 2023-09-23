@@ -47,24 +47,12 @@ export const Song = ({ song }) => {
 
   const [movieData, setMovieData] = useState([])
 
-  // TODO: API化
   const fetchYouTube = async () => {
     if (!song) {
       return
     }
 
-    const endpoint = 'https://www.googleapis.com/youtube/v3/search'
-    const part = 'id'
-    const q = `${song.title}合唱曲`
-    const maxResults = 3
-    const regionCode = 'jp'
-  
-    const key = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY
-  
-    const query = encodeURI(
-      `part=${part}&q=${q}&maxResults=${maxResults}&regionCode=${regionCode}&key=${key}`
-    )
-    const response = await fetch(`${endpoint}?${query}`)
+    const response = await fetch(`/api/youtube?id=${song.id}&title=${song.title}`)
     const data = await response.json()
 
     setMovieData(data)
